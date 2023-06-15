@@ -1,3 +1,4 @@
+import { ILogger } from './logger/logger.interface';
 import express, { Express } from "express";
 import { Server } from "http";
 import { LoggerService } from "./logger/logger.service";
@@ -8,11 +9,11 @@ export class App {
   app: Express;
   port: number;
   server: Server;
-  logger: LoggerService;
+  logger: ILogger;
   userController: UserController;
   exeptionFilter: ExecptionFilter;
   constructor(
-    logger: LoggerService,
+    logger: ILogger,
     userController: UserController,
     exeptionFilter: ExecptionFilter
   ) {
