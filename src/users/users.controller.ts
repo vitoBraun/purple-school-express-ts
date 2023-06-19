@@ -14,10 +14,10 @@ import { ValidateMiddleware } from '../common/validate.middleware';
 @injectable()
 export class UserController extends BaseController implements IUserController {
 	constructor(
-		@inject(TYPES.ILogger) private LoggerService: ILogger,
+		@inject(TYPES.ILogger) private loggerService: ILogger,
 		@inject(TYPES.UserService) private userService: IUserService,
 	) {
-		super(LoggerService);
+		super(loggerService);
 		this.bindRoutes([
 			{
 				path: '/register',
@@ -25,13 +25,26 @@ export class UserController extends BaseController implements IUserController {
 				function: this.register,
 				middleware: [new ValidateMiddleware(UserRegisterDto)],
 			},
-			{ path: '/login', method: 'post', function: this.login },
+			{
+				path: '/login',
+				method: 'post',
+				function: this.login,
+				middleware: [new ValidateMiddleware(UserLoginDto)],
+			},
 		]);
 	}
 
-	login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
-		console.log(req.body);
-		next(new HttpError(401, 'Auth error', 'login'));
+	async login(
+		req: Request<{}, {}, UserLoginDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const { body } = req;
+		const result = await this.userService.validateUser(body);
+		if (!result) {
+			return next(new HttpError(400, 'Invalid credentials', 'login'));
+		}
+		this.ok(res, 'Logged in successfully');
 	}
 	async register(
 		{ body }: Request<{}, {}, UserRegisterDto>,
