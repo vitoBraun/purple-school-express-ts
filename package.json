@@ -12,12 +12,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./src/**",
     "lint:fix": "eslint ./src/** --fix",
-    "clinic": "npm run build && clinic doctor --on-port 'autocannon -m POST localhost:8000/users/register' -- node dist/main.js"
+    "clinic": "npm run build && clinic doctor --on-port 'autocannon -m POST localhost:8000/users/register' -- node dist/main.js",
+    "generate": "npx prisma generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^4.15.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "class-transformer": "^0.5.1",
@@ -38,6 +40,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
+    "prisma": "^4.15.0",
     "ts-node-register": "^1.0.0",
     "typescript": "^5.1.3"
   }

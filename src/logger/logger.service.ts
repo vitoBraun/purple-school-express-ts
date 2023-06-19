@@ -15,7 +15,13 @@ export class LoggerService implements ILogger {
 		});
 	}
 	log(...args: unknown[]): void {
-		this.logger.info(...args);
+		let argsArr = [];
+		if (args.length > 1) {
+			argsArr = [`[${args[1]}]`, args[0]];
+		} else {
+			argsArr = [args[0]];
+		}
+		this.logger.info(...argsArr);
 	}
 	error(...args: unknown[]): void {
 		this.logger.error(...args);

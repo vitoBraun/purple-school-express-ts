@@ -1,4 +1,3 @@
-import { ConfigService } from './config/config.service';
 import { ILogger } from './logger/logger.interface';
 import express, { Express } from 'express';
 import { Server } from 'http';
@@ -6,10 +5,10 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from './users/types';
 import 'reflect-metadata';
 import { json } from 'body-parser';
-import { IUserController } from './users/users.controller.interface';
 import { IConfigService } from './config/config.service.interface';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { UserController } from './users/users.controller';
+import { PrismaService } from './database/prisma.service';
 @injectable()
 export class App {
 	app: Express;
@@ -21,9 +20,10 @@ export class App {
 		@inject(TYPES.UserController) private userController: UserController,
 		@inject(TYPES.ExecptionFilter) private exeptionFilter: IExeptionFilter,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
+		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 	) {
 		this.app = express();
-		this.port = 8000;
+		this.port = Number(this.configService.get('PORT')) || 8000;
 		this.logger = logger;
 		this.userController = userController;
 		this.exeptionFilter = exeptionFilter;
@@ -45,7 +45,8 @@ export class App {
 		this.useMiddleware();
 		this.useRotes();
 		this.useExeptionFilters();
+		await this.prismaService.connect();
 		this.server = this.app.listen(this.port);
-		this.logger.log(`App is listening on http://localhost:${this.port}`);
+		this.logger.log(`App is listening on http://localhost:${this.port}`, 'App');
 	}
 }

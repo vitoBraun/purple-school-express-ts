@@ -12,7 +12,7 @@ export class ConfigService implements IConfigService {
 		if (result.error) {
 			this.logger.error('Could not read .env file');
 		} else {
-			this.logger.log('Config loaded');
+			this.logger.log('Config loaded', 'ConfigService');
 			this.config = result.parsed as DotenvParseOutput;
 		}
 	}
