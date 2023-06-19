@@ -6,6 +6,7 @@ import { ExecptionFilter } from './errors/exeption.filter';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './users/types';
 import 'reflect-metadata';
+import { json } from 'body-parser';
 @injectable()
 export class App {
 	app: Express;
@@ -24,6 +25,10 @@ export class App {
 		this.exeptionFilter = exeptionFilter;
 	}
 
+	useMiddleware(): void {
+		this.app.use(json());
+	}
+
 	useRotes(): void {
 		this.app.use('/users', this.userController.router);
 	}
@@ -33,6 +38,7 @@ export class App {
 	}
 
 	public async init(): Promise<void> {
+		this.useMiddleware();
 		this.useRotes();
 		this.useExeptionFilters();
 		this.server = this.app.listen(this.port);
