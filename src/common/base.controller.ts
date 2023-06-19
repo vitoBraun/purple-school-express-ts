@@ -4,10 +4,12 @@ import { ILogger } from '../logger/logger.interface';
 import { injectable } from 'inversify';
 export { Router } from 'express';
 import 'reflect-metadata';
+import { BaseEntity } from './base.entity';
 @injectable()
-export abstract class BaseController {
+export abstract class BaseController extends BaseEntity {
 	private readonly _router: Router;
 	constructor(private logger: ILogger) {
+		super('UserController');
 		this._router = Router();
 	}
 	get router(): Router {
@@ -29,7 +31,7 @@ export abstract class BaseController {
 
 	protected bindRoutes(routes: IControllerRoute[]): void {
 		for (const route of routes) {
-			this.logger.log(route.path, 'UserController');
+			this.logger.log(route.path, this.name);
 			const middlware = route.middleware?.map((m) => m.execute.bind(m));
 			const handler = route.function.bind(this);
 			const pipeline = middlware ? [...middlware, handler] : handler;
