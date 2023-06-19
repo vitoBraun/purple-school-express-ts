@@ -7,10 +7,12 @@
   "scripts": {
     "start": "nodemon ./dist/main.js",
     "dev": "npx nodemon",
+    "dev:inspect": "nodemon -e ts,json --exec node --inspect=localhost:9222 -r ts-node/register src/main.ts",
     "build": "rm -rf ./dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./src/**",
-    "lint:fix": "eslint ./src/** --fix"
+    "lint:fix": "eslint ./src/** --fix",
+    "clinic": "npm run build && clinic doctor --on-port 'autocannon -m POST localhost:8000/users/register' -- node dist/main.js"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +20,6 @@
   "dependencies": {
     "express": "^4.18.2",
     "inversify": "^6.0.1",
-    "nodemon": "^2.0.22",
     "reflect-metadata": "^0.1.13",
     "tslog": "^3.3.4"
   },
@@ -29,7 +30,9 @@
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
+    "ts-node-register": "^1.0.0",
     "typescript": "^5.1.3"
   }
 }

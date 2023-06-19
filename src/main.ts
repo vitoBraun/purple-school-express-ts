@@ -20,7 +20,6 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<App>(TYPES.Application).to(App);
 });
 
-const B = 123;
 function bootstrap(): IBootsrapReturn {
 	const appContainer = new Container();
 	appContainer.load(appBindings);
