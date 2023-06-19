@@ -6,8 +6,11 @@
   "type": "commonjs",
   "scripts": {
     "start": "nodemon ./dist/main.js",
+    "dev": "npx nodemon",
     "build": "rm -rf ./dist && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./src/**",
+    "lint:fix": "eslint ./src/** --fix"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +23,13 @@
     "tslog": "^3.3.4"
   },
   "devDependencies": {
-    "@types/express": "^4.17.17"
+    "@types/express": "^4.17.17",
+    "@typescript-eslint/eslint-plugin": "^5.59.11",
+    "@typescript-eslint/parser": "^5.59.11",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
+    "typescript": "^5.1.3"
   }
 }
