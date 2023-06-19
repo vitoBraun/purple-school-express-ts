@@ -2,7 +2,8 @@ import { Logger } from 'tslog';
 
 export interface ILogger {
 	logger: Logger;
-	log: (...args: unknown[]) => void;
-	error: (...args: unknown[]) => void;
-	warn: (...args: unknown[]) => void;
+	getMessageString: (...args: string[]) => string;
+	log: (...args: string[]) => void;
+	error: (...args: string[]) => void;
+	warn: (...args: string[]) => void;
 }

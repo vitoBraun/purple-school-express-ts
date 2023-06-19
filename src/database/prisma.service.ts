@@ -10,8 +10,14 @@ export class PrismaService {
 		this.client = new PrismaClient();
 	}
 	async connect(): Promise<void> {
-		await this.client.$connect();
-		this.logger.log('Connected to Prisma', 'DataBase');
+		try {
+			await this.client.$connect();
+			this.logger.log('Connected to Prisma', 'DataBase');
+		} catch (e) {
+			if (e instanceof Error) {
+				this.logger.error(`Problem with connecting to database: ${e.message}`, 'DataBase');
+			}
+		}
 	}
 	async disconnect(): Promise<void> {
 		await this.client.$disconnect();

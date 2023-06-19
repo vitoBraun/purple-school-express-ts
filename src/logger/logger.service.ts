@@ -5,6 +5,7 @@ import 'reflect-metadata';
 @injectable()
 export class LoggerService implements ILogger {
 	public logger: Logger;
+	private messageString = '';
 
 	constructor() {
 		this.logger = new Logger({
@@ -14,19 +15,22 @@ export class LoggerService implements ILogger {
 			displayFunctionName: false,
 		});
 	}
-	log(...args: unknown[]): void {
-		let argsArr = [];
+	getMessageString(...args: string[]): string {
 		if (args.length > 1) {
-			argsArr = [`[${args[1]}]`, args[0]];
+			this.messageString = `[${args[1]}] ${args[0]} ${args.slice(2).join(' ')}`;
 		} else {
-			argsArr = [args[0]];
+			this.messageString = `${args[0]}`;
 		}
-		this.logger.info(...argsArr);
+		return this.messageString;
 	}
-	error(...args: unknown[]): void {
-		this.logger.error(...args);
+
+	log(...args: string[]): void {
+		this.logger.info(this.getMessageString(...args));
 	}
-	warn(...args: unknown[]): void {
-		this.logger.warn(...args);
+	error(...args: string[]): void {
+		this.logger.error(this.getMessageString(...args));
+	}
+	warn(...args: string[]): void {
+		this.logger.warn(this.getMessageString(...args));
 	}
 }
