@@ -42,6 +42,6 @@ export class UserController extends BaseController implements IUserController {
 		if (!result) {
 			return next(new HttpError(422, 'The user is already existing', 'UserService'));
 		}
-		this.ok(res, { email: result.email });
+		this.ok(res, { email: result.email, passwordHash: result.password });
 	}
 }
