@@ -10,6 +10,7 @@ import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { UserController } from './users/users.controller';
 import { PrismaService } from './database/prisma.service';
 import { BaseEntity } from './common/base.entity';
+import { UsersRepository } from './users/users.repository';
 @injectable()
 export class App extends BaseEntity {
 	app: Express;
@@ -22,6 +23,7 @@ export class App extends BaseEntity {
 		@inject(TYPES.ExecptionFilter) private exeptionFilter: IExeptionFilter,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.PrismaService) private prismaService: PrismaService,
+		@inject(TYPES.UsersRepository) private usersRepository: UsersRepository,
 	) {
 		super('App');
 		this.app = express();

@@ -23,6 +23,6 @@ export class PrismaService extends BaseEntity {
 	}
 	async disconnect(): Promise<void> {
 		await this.client.$disconnect();
-		this.logger.log('Prisma disconnected from DB');
+		this.logger.log('Prisma disconnected from DB', this.name);
 	}
 }
