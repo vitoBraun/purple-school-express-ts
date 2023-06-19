@@ -10,10 +10,10 @@ import { IConfigService } from './config/config.service.interface';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { UserController } from './users/users.controller';
 import { PrismaService } from './database/prisma.service';
-import { BaseEntity } from './common/base.entity';
+
 import { UsersRepository } from './users/users.repository';
 @injectable()
-export class App extends BaseEntity {
+export class App {
 	app: Express;
 	port: number;
 	server: Server;
@@ -26,7 +26,6 @@ export class App extends BaseEntity {
 		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 		@inject(TYPES.UsersRepository) private usersRepository: UsersRepository,
 	) {
-		super('App');
 		this.app = express();
 		this.port = Number(this.configService.get('PORT')) || 8000;
 		this.logger = logger;
@@ -54,6 +53,6 @@ export class App extends BaseEntity {
 		this.useExeptionFilters();
 		await this.prismaService.connect();
 		this.server = this.app.listen(this.port);
-		this.logger.log(`App is listening on http://localhost:${this.port}`, this.name);
+		this.logger.log(`App is listening on http://localhost:${this.port}`);
 	}
 }

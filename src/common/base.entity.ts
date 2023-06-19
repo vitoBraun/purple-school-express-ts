@@ -2,9 +2,13 @@ import { injectable } from 'inversify';
 
 @injectable()
 export class BaseEntity {
-	private _name: string;
-	constructor(private readonly entityName: string) {
-		this._name = entityName;
+	protected _name: string;
+	constructor(private readonly entityName?: string) {
+		if (entityName) {
+			this._name = entityName;
+		} else {
+			this._name = 'application module';
+		}
 	}
 	get name(): string {
 		return this._name;
