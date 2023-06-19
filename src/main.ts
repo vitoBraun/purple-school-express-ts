@@ -6,7 +6,9 @@ import { ILogger } from './logger/logger.interface';
 import { TYPES } from './users/types';
 import { UserController } from './users/users.controller';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
-import { IUserController } from './users/users.interface';
+import { IUserController } from './users/users.controller.interface';
+import { UserService } from './users/users.sevice';
+import { IUserService } from './users/users.sevice.interface';
 
 export interface IBootsrapReturn {
 	appContainer: Container;
@@ -17,6 +19,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<ILogger>(TYPES.ILogger).to(LoggerService);
 	bind<IExeptionFilter>(TYPES.ExecptionFilter).to(ExecptionFilter);
 	bind<IUserController>(TYPES.UserController).to(UserController);
+	bind<IUserService>(TYPES.UserService).to(UserService);
 	bind<App>(TYPES.Application).to(App);
 });
 
