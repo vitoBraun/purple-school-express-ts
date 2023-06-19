@@ -15,7 +15,7 @@ export class PrismaService {
 			this.logger.log('Connected to Prisma', 'DataBase');
 		} catch (e) {
 			if (e instanceof Error) {
-				this.logger.error(`Problem with connecting to database: ${e.message}`, 'DataBase');
+				this.logger.error(`Connection failed`, 'DataBase', e.message);
 			}
 		}
 	}
