@@ -8,17 +8,17 @@ import { ILogger } from '../logger/logger.interface';
 import { IUserController } from './users.controller.interface';
 import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-regiter.dto';
-import { IUserService } from './users.sevice.interface';
 import { ValidateMiddleware } from '../common/validate.middleware';
 import { sign } from 'jsonwebtoken';
 import { IConfigService } from '../config/config.service.interface';
 import { AuthGuard } from '../common/auth.guard';
+import { UserService } from './users.sevice';
 
 @injectable()
 export class UserController extends BaseController implements IUserController {
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILogger,
-		@inject(TYPES.UserService) private userService: IUserService,
+		@inject(TYPES.UserService) private userService: UserService,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
 	) {
 		super(loggerService);
@@ -53,7 +53,7 @@ export class UserController extends BaseController implements IUserController {
 		const result = await this.userService.validateUser(body);
 
 		if (!result) {
-			return next(new HttpError(400, 'Invalid credentials', 'login'));
+			return next(new HttpError(401, 'Invalid credentials', 'login'));
 		}
 		const jwt = await this.signJWT(body.email, this.configService.get('JWT_SECRET'));
 

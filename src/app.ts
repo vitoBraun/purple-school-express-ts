@@ -12,8 +12,7 @@ import { UserController } from './users/users.controller';
 import { PrismaService } from './database/prisma.service';
 
 import { UsersRepository } from './users/users.repository';
-import { IUserController } from './users/users.controller.interface';
-import { UserService } from './users/users.sevice';
+
 @injectable()
 export class App {
 	app: Express;
