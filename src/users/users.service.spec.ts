@@ -29,6 +29,13 @@ beforeAll(() => {
 	userService = container.get<IUserService>(TYPES.UserService);
 });
 
+let createdUser: UserModel | null;
+const credentials = {
+	email: 'a@a.ru',
+	password: 'qwerty1234',
+	name: 'Vasya',
+};
+
 describe('Users Service', () => {
 	it('Creates user', async () => {
 		configService.get = jest.fn().mockReturnValueOnce('2');
@@ -40,12 +47,33 @@ describe('Users Service', () => {
 				id: 1,
 			}),
 		);
-		const createdUser = await userService.createUser({
-			email: 'a@a.ru',
-			password: 'qwerty1234',
-			name: 'Vasya',
-		});
+		createdUser = await userService.createUser(credentials);
 		expect(createdUser?.id).toEqual(1);
 		expect(createdUser?.password).not.toEqual('qwerty1234');
+	});
+	it('Validate user success', async () => {
+		usersRepository.find = jest.fn().mockReturnValueOnce(createdUser);
+
+		const result = await userService.validateUser({
+			email: credentials.email,
+			password: credentials.password,
+		});
+		expect(result).toBeTruthy();
+	});
+	it('Restrics user om wrong password', async () => {
+		usersRepository.find = jest.fn().mockReturnValueOnce(createdUser);
+		const result = await userService.validateUser({
+			email: credentials.email,
+			password: 'wrong_password',
+		});
+		expect(result).toBeFalsy();
+	});
+	it('Restrics user om wrong email', async () => {
+		usersRepository.find = jest.fn().mockReturnValueOnce(createdUser);
+		const result = await userService.validateUser({
+			email: 'wrong_email',
+			password: credentials.password,
+		});
+		expect(result).toBeFalsy();
 	});
 });
