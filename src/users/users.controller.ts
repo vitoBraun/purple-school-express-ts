@@ -51,6 +51,7 @@ export class UserController extends BaseController implements IUserController {
 	): Promise<void> {
 		const { body } = req;
 		const result = await this.userService.validateUser(body);
+
 		if (!result) {
 			return next(new HttpError(400, 'Invalid credentials', 'login'));
 		}

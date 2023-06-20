@@ -12,6 +12,8 @@ import { UserController } from './users/users.controller';
 import { PrismaService } from './database/prisma.service';
 
 import { UsersRepository } from './users/users.repository';
+import { IUserController } from './users/users.controller.interface';
+import { UserService } from './users/users.sevice';
 @injectable()
 export class App {
 	app: Express;
@@ -39,7 +41,7 @@ export class App {
 		this.app.use(authMiddleware.execute.bind(authMiddleware));
 	}
 
-	useRotes(): void {
+	useRoutes(): void {
 		this.app.use('/users', this.userController.router);
 	}
 
@@ -49,10 +51,14 @@ export class App {
 
 	public async init(): Promise<void> {
 		this.useMiddleware();
-		this.useRotes();
+		this.useRoutes();
 		this.useExeptionFilters();
 		await this.prismaService.connect();
 		this.server = this.app.listen(this.port);
 		this.logger.log(`App is listening on http://localhost:${this.port}`);
+	}
+
+	public close(): void {
+		this.server.close();
 	}
 }

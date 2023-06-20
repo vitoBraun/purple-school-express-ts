@@ -29,7 +29,6 @@ export class UserService implements IUserService {
 		if (email !== existedUser?.email) {
 			return false;
 		}
-
 		const isCorrectPassword = await User.comparePasswords(password, existedUser.password);
 		if (!isCorrectPassword) {
 			return false;
