@@ -10,7 +10,7 @@
     "dev:inspect": "nodemon -e ts,json --exec node --inspect=localhost:9222 -r ts-node/register src/main.ts",
     "build": "rm -rf ./dist && tsc",
     "test": "jest",
-    "test:e2e": "jest --config jest.e2e.config.ts",
+    "test:e2e": "jest --config jest.e2e.config.ts --coverage",
     "lint": "eslint ./src/**",
     "lint:fix": "eslint ./src/** --fix",
     "clinic": "npm run build && clinic doctor --on-port 'autocannon -m POST localhost:8000/users/register' -- node dist/main.js",
